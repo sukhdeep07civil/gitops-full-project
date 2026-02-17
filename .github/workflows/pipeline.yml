@@ -32,6 +32,6 @@ jobs:
         sed -i "s|image: .*|image: sm0712/gitops-full-project:${{ github.sha }}|" kubernetes/deployment.yaml
         git config user.name "github-actions"
         git config user.email "actions@gmail.com"
-        git add k8s/deployment.yaml
+        git add kubernetes/deployment.yaml
         git commit -m "Update image to ${{ github.sha }}"
         git push
