@@ -29,11 +29,12 @@ jobs:
 
     - name: Update deployment yaml file
       run: |
-        sed -i "s|image: .*|image: sm0712/gitops-full-project:${{ github.sha }}|" kubernetes/deployment.yaml
         git config user.name "github-actions"
         git config user.email "actions@gmail.com"
-
         git pull --rebase origin main
+
+        sed -i "s|image: .*|image: sm0712/gitops-full-project:${{ github.sha }}|" kubernetes/deployment.yaml
+        
 
         git add kubernetes/deployment.yaml
         git commit -m "Update image to ${{ github.sha }}"
