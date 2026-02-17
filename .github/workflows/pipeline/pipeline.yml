@@ -1,0 +1,34 @@
+name: Full Gitops Project
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Build Images
+      run: |
+        docker build -t ssm0712/gitops-full-project:${{ github.sha }} .
+        docker build -t ssm0712/gitops-full-project:latest
+
+    - name: Docker hub login
+      run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+    - name: Push Docker Images
+      run: |
+        docker push ssm0712/gitops-full-project:${{ github.sha }}
+        docker push ssm0712/gitops-full-project:latest
+
+    - name: Update deployment yaml file
+      run: |
+        sed -i "s|image: .*|image: sm0712/gitops-full-project:${{ github.sha }}|" k8s/deployment.yaml
+        git config user.name "github-actions"
+        git config user.email "actions@gmail.com"
+        git add k8s/deployment.yaml
+        git commit -m "Update image to ${{ github.sha }}"
+        git push
