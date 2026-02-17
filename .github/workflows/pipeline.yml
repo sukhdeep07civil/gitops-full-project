@@ -14,7 +14,7 @@ jobs:
     - name: Build Images
       run: |
         docker build -t ssm0712/gitops-full-project:${{ github.sha }} .
-        docker build -t ssm0712/gitops-full-project:latest
+        docker build -t ssm0712/gitops-full-project:latest .
 
     - name: Docker hub login
       run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
