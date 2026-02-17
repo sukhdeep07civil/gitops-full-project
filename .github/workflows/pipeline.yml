@@ -33,7 +33,7 @@ jobs:
         git config user.email "actions@gmail.com"
         git pull --rebase origin main
 
-        sed -i "s|image: .*|image: sm0712/gitops-full-project:${{ github.sha }}|" kubernetes/deployment.yaml
+        sed -i "s|image: .*|image: ssm0712/gitops-full-project:${{ github.sha }}|" kubernetes/deployment.yaml
         
 
         git add kubernetes/deployment.yaml
